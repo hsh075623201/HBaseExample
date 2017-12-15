@@ -34,13 +34,17 @@ object HBaseTest {
     val minRowFilter = new RowFilter(CompareFilter.CompareOp.GREATER_OR_EQUAL,new BinaryComparator("20170101_BD_201104000001".getBytes))
     filterList.addFilter(minRowFilter)
     //endrow过滤
-    val maxRowFilter = new RowFilter(CompareFilter.CompareOp.LESS_OR_EQUAL,new BinaryComparator("20170101_BD_201106000259".getBytes))
+    val maxRowFilter = new RowFilter(CompareFilter.CompareOp.LESS_OR_EQUAL,new BinaryComparator("20170101_BD_201108001537".getBytes))
     filterList.addFilter(maxRowFilter)
     //正则根据value过滤
-    val regexRowFilter = new ValueFilter(CompareFilter.CompareOp.NOT_EQUAL,new RegexStringComparator("\\w+_sil*",Pattern.CASE_INSENSITIVE | Pattern.DOTALL))
+    val regexValueFilter = new ValueFilter(CompareFilter.CompareOp.NOT_EQUAL,new RegexStringComparator("\\w+_sil*",Pattern.CASE_INSENSITIVE | Pattern.DOTALL))
+    filterList.addFilter(regexValueFilter)
+    //正则根据row过滤
+    val regexRowFilter = new RowFilter(CompareFilter.CompareOp.EQUAL,new RegexStringComparator("20170101_\\w+_201.*04\\d+",Pattern.CASE_INSENSITIVE | Pattern.DOTALL))
     filterList.addFilter(regexRowFilter)
 
     val scan = new Scan()
+
     scan.setFilter(filterList)
     val resultScanner =  table.getScanner(scan)
     val result = resultScanner.asScala.map(ele=>{
