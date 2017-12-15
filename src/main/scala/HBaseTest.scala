@@ -39,7 +39,7 @@ object HBaseTest {
     //正则根据value过滤
     val regexValueFilter = new ValueFilter(CompareFilter.CompareOp.NOT_EQUAL,new RegexStringComparator("\\w+_sil*",Pattern.CASE_INSENSITIVE | Pattern.DOTALL))
     filterList.addFilter(regexValueFilter)
-    //正则根据row过滤
+    //正则根据row key过滤
     val regexRowFilter = new RowFilter(CompareFilter.CompareOp.EQUAL,new RegexStringComparator("20170101_\\w+_201.*04\\d+",Pattern.CASE_INSENSITIVE | Pattern.DOTALL))
     filterList.addFilter(regexRowFilter)
 
