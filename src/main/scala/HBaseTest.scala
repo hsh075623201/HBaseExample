@@ -43,12 +43,16 @@ object HBaseTest {
     val regexRowFilter = new RowFilter(CompareFilter.CompareOp.EQUAL,new RegexStringComparator("20170101_\\w+_201.*04\\d+",Pattern.CASE_INSENSITIVE | Pattern.DOTALL))
     filterList.addFilter(regexRowFilter)
     //根据page size 过滤
-    val pageFilter = new PageFilter(1)
+    val pageFilter = new PageFilter(2)
     filterList.addFilter(pageFilter)
 
     val scan = new Scan()
 
     scan.setFilter(filterList)
+
+    scan.setStartRow("20170101_BD_201104000001".getBytes)
+    scan.setStopRow("20170101_BD_201104000003".getBytes)
+
     val resultScanner =  table.getScanner(scan)
     val result = resultScanner.asScala.map(ele=>{
       //println(new String(ele.value()))
