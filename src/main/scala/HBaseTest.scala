@@ -1,3 +1,5 @@
+import java.util.regex.Pattern
+
 import org.apache.hadoop.hbase.filter._
 import org.apache.hadoop.hbase.util.Bytes
 import org.apache.hadoop.hbase.{TableName, HBaseConfiguration}
@@ -34,6 +36,9 @@ object HBaseTest {
     //endrow过滤
     val maxRowFilter = new RowFilter(CompareFilter.CompareOp.LESS_OR_EQUAL,new BinaryComparator("20170101_BD_201106000259".getBytes))
     filterList.addFilter(maxRowFilter)
+    //正则根据value过滤
+    val regexRowFilter = new ValueFilter(CompareFilter.CompareOp.NOT_EQUAL,new RegexStringComparator("\\w+_sil*",Pattern.CASE_INSENSITIVE | Pattern.DOTALL))
+    filterList.addFilter(regexRowFilter)
 
     val scan = new Scan()
     scan.setFilter(filterList)
