@@ -42,6 +42,9 @@ object HBaseTest {
     //正则根据row key过滤
     val regexRowFilter = new RowFilter(CompareFilter.CompareOp.EQUAL,new RegexStringComparator("20170101_\\w+_201.*04\\d+",Pattern.CASE_INSENSITIVE | Pattern.DOTALL))
     filterList.addFilter(regexRowFilter)
+    //根据page size 过滤
+    val pageFilter = new PageFilter(1)
+    filterList.addFilter(pageFilter)
 
     val scan = new Scan()
 
